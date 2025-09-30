@@ -1,13 +1,13 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver # 加载jdbc驱动
-    url: jdbc:mysql://localhost:3306/mybatis # 加载数据路路径
+    url: jdbc:mysql://localhost:3306/springBoot # 加载数据路路径
     username: root # 传入用户名
     password: 20030909Aa # 传入密码
 
 # myBatis-plus用法，暂时cv
 mybatis-plus:
-  type-aliases-package: com.example.demo.entity # 加载类别名！！
+  type-aliases-package: com.itszt.ExamServer.entity # 加载类别名！！
   mapper-locations: classpath:mappers/* # 注意是resources下面的mappers！！！！
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
