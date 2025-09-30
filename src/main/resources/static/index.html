@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head> 
+  <meta charset="UTF-8">
+  <title>登录系统</title>
+  <script type="text/javascript" src="axios.js"></script>
+  <script type="text/javascript">
+    function login(){
+        const username=document.getElementById("username").value;
+        const password=document.getElementById("password").value;
+
+        axios({
+               "url":"/user/login?username="+username+"&password="+password
+        }).then(  function (resp){
+                    // resp.data 是后端返回过来的整个json字符串
+                    var result = resp.data.status;
+                    if(result!=200){
+                          alert(resp.data.msg)
+                    }else{
+                        // 否则后端login请求返回状态码200，去到登录后的考试试题界面
+                        window.location.href="/index2.html";
+                    }
+                  }
+              )
+    }
+  </script>
+</head>
+<body>
+<center>
+  <table border="2">
+    <tr>
+      <td>用户名</td>
+      <td><input type="text" id="username" placeholder="请填写用户名"></td>
+    </tr>
+    <tr>
+      <td>密码</td>
+      <td><input type="password" id="password" placeholder="请输入密码"></td>
+    </tr>
+    <tr align="center">
+      <td colspan="2"><input type="button" value="登录" onclick="login()"></td>
+    </tr>
+  </table>
+</center>
+
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="axios.js"></script>
+    <script type="text/javascript" src="reset.js"></script>
+    <script type="text/javascript">
+        function update(){
+           var domList = document.getElementsByName("answer");
+           var correctAnswer="";
+           for(var i=0;i<domList.length;i++){
+                  var dom=domList[i];
+                  if(dom.checked){
+                      correctAnswer=dom.value;
+                      break;
+                  }
+           }
+           axios.put("/question",
+                {
+                         "id":document.getElementById("id").value,
+
+                         "title":document.getElementById("title").value,
+                         "optionA":document.getElementById("optionA").value,
+                        "optionB":document.getElementById("optionB").value,
+                        "optionC":document.getElementById("optionC").value,
+                        "optionD":document.getElementById("optionD").value,
+                        "answer":correctAnswer
+                    })
+                .then(function (respone){
+                     var result = respone.data.status;
+                     alert(respone.data.msg)
+                })
+        }
+    </script>
+</head>
+<body>
+<center>
+    <table border="2">
+        <tr>
+            <td>题号:</td>
+            <td><input type="text" name="id" id="id"></td>
+        </tr>
+        <tr>
+            <td>题目:</td>
+            <td><input type="text" name="title" id="title"></td>
+        </tr>
+        <tr>
+            <td>A:</td>
+            <td><input type="text" name="optionA" id="optionA"></td>
+        </tr>
+        <tr>
+            <td>B:</td>
+            <td><input type="text" name="optionB" id="optionB"></td>
+        </tr>
+        <tr>
+            <td>C:</td>
+            <td><input type="text" name="optionC" id="optionC"></td>
+        </tr>
+        <tr>
+            <td>D:</td>
+            <td><input type="text" name="optionD" id="optionD"></td>
+        </tr>
+        <tr>
+            <td>正确答案:</td>
+            <td>
+                <input type="radio" name="answer" value="A">A
+                <input type="radio" name="answer" value="B">B
+                <input type="radio" name="answer" value="C">C
+                <input type="radio" name="answer" value="D">D
+            </td>
+        </tr>
+        <tr>
+            <td><input type="submit" value="更新试题" onclick="update()"></td>
+            <td><input type="button" value="重置" onclick="reset()"></td>
+        </tr>
+    </table>
+</center>
+</body>
+</html>

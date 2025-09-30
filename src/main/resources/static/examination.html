@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script type="text/javascript" src="axios.js"></script>
+  <script type="text/javascript">
+    window.onload=function (){
+
+        axios({
+               "url":"/question/rand",
+               "method":"get",
+               "withCredentials":true  //要求xhr将Cookie写入到请求头
+        })
+            .then(function (resp){
+                var questionList= resp.data.data;
+                for(var i=0;i<questionList.length;i++){
+                      var q = questionList[i];
+
+                    var trDom=document.createElement("tr");//<tr></tr>
+                    var tdDom1= document.createElement("td"); //<td></td>
+                    var tdDom2= document.createElement("td"); //<td></td>
+                    var tdDom3= document.createElement("td"); //<td></td>
+                    var tdDom4= document.createElement("td"); //<td></td>
+                    var tdDom5= document.createElement("td"); //<td></td>
+                    var tdDom6= document.createElement("td"); //<td></td>
+                    var tdDom7= document.createElement("td"); //<td></td>
+
+                    tdDom1.innerHTML=q.id;
+                    tdDom2.innerHTML=q.title;
+                    tdDom3.innerHTML=q.optionA;
+                    tdDom4.innerHTML=q.optionB;
+                    tdDom5.innerHTML=q.optionC;
+                    tdDom6.innerHTML=q.optionD;
+                    tdDom7.innerHTML="<input type='radio' name='"+q.id+"' value='A'>A" +
+                                    "<input type='radio' name='"+q.id+"' value='B'>B" +
+                                    "<input type='radio' name='"+q.id+"' value='C'>C" +
+                                    "<input type='radio' name='"+q.id+"' value='D'>D"
+
+                    trDom.appendChild(tdDom1)
+                    trDom.appendChild(tdDom2)
+                    trDom.appendChild(tdDom3)
+                    trDom.appendChild(tdDom4)
+                    trDom.appendChild(tdDom5)
+                    trDom.appendChild(tdDom6)
+                    trDom.appendChild(tdDom7);
+
+
+                    var tableDom= document.getElementById("myTable");
+                    tableDom.appendChild(trDom);
+                }
+
+                var trDom=document.createElement("tr");
+                trDom.align="center"
+                var tdDom=document.createElement("td");
+                tdDom.colSpan=7
+                var btnDom=document.createElement("input");
+                btnDom.type="button";
+                btnDom.value="交卷"
+                btnDom.onclick=scoreFun;
+                trDom.appendChild(tdDom);
+                tdDom.appendChild(btnDom);
+                var tableDom= document.getElementById("myTable");
+                tableDom.appendChild(trDom);
+            })
+    }
+    function scoreFun(){
+
+      //          [ {"id": 10, "answer": "A"}, {"id": 11, "answer": "B"},{"id": 13, "answer": "C"}    ]
+
+        var param=[];
+        var domList= document.getElementsByTagName("input")
+
+        let num = 0;
+        for(var i=0;i<domList.length;i++){
+               var dom =domList[i]
+               if(dom.type=="radio" && dom.checked){
+                   param[num++] = {"id": dom.name, "answer": dom.value}
+               }
+        }
+
+        axios.post('/question/score', param).then(
+          function (resp){
+            if (resp.data.status == 200) {
+              var score =  resp.data.data;
+              alert("考试成绩 "+score+" 分")
+            } else {
+              alert(resp.data.msg)
+            }
+        })
+
+    }
+  </script>
+</head>
+<body>
+<table border="2" align="center" id="myTable">
+  <tr>
+    <td>题号</td>
+    <td>题目</td>
+    <td>A</td>
+    <td>B</td>
+    <td>C</td>
+    <td>D</td>
+    <td>正确答案</td>
+  </tr>
+</table>
+</body>
+</html>

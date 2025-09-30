@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="axios.js"></script>
+    <script type="text/javascript">
+
+        // 窗口刚被加载的时候，立即执行！！发送一个http请求向后端请求考试试题数据
+        window.onload=function(){
+            axios.get("/question")
+                .then(function (resp){
+                    var jsonList= resp.data.data;
+                        for(var i=0;i<jsonList.length;i++){
+                            // 1.创建空的行标签tr和多个列标签td
+                            var q= jsonList[i];
+                            var trDom=document.createElement("tr");//<tr></tr>
+                            var tdDom1= document.createElement("td"); //<td></td>
+                            var tdDom2= document.createElement("td"); //<td></td>
+                            var tdDom3= document.createElement("td"); //<td></td>
+                            var tdDom4= document.createElement("td"); //<td></td>
+                            var tdDom5= document.createElement("td"); //<td></td>
+                            var tdDom6= document.createElement("td"); //<td></td>
+                            var tdDom7= document.createElement("td"); //<td></td>
+                            var tdDom8=  document.createElement("td"); //<td></td>
+                            // 2.将后端返回的试题对象数据填充到各个td内部
+                            tdDom1.innerHTML=q.id;
+                            tdDom2.innerHTML=q.title;
+                            tdDom3.innerHTML=q.optionA;
+                            tdDom4.innerHTML=q.optionB;
+                            tdDom5.innerHTML=q.optionC;
+                            tdDom6.innerHTML=q.optionD;
+                            tdDom7.innerHTML=q.answer;
+                            // 删除需要做两件事情
+                            // 1.发送一个请求让后端删除对应id的试题
+                            // 2.需要将前端table中那一行数据给删除掉
+                            tdDom8.innerHTML="<input type='button' value='删除试题' onclick='delQuestion("+q.id+",this)'/>"
+
+                            // 3.将td拼接到tr内部
+                            trDom.appendChild(tdDom1)
+                            trDom.appendChild(tdDom2)
+                            trDom.appendChild(tdDom3)
+                            trDom.appendChild(tdDom4)
+                            trDom.appendChild(tdDom5)
+                            trDom.appendChild(tdDom6)
+                            trDom.appendChild(tdDom7);
+                            trDom.appendChild(tdDom8);
+
+                            // 将一切准备好的tr拼接到table内部
+                            var tableDom= document.getElementById("myTable");
+                            tableDom.appendChild(trDom);
+                    }
+                })
+        }
+
+        function delQuestion(questionId,btnDom){
+            axios.delete("/question/"+questionId)
+                .then(function (resp){
+                        var result= resp.data.status;
+                        if(result==200){
+                            //被删除试题所在数据行从表格移除
+                            var tdDom = btnDom.parentNode;
+                            var trDom = tdDom.parentNode;
+                            trDom.remove();
+                        }else{
+                            alert(resp.data.msg);
+                        }
+                    }
+                )
+        }
+    </script>
+</head>
+<body>
+<table border="2" align="center" id="myTable">
+    <tr>
+        <td>题号</td>
+        <td>题目</td>
+        <td>A</td>
+        <td>B</td>
+        <td>C</td>
+        <td>D</td>
+        <td>正确答案</td>
+        <td>删除</td>
+    </tr>
+</table>
+</body>
+</html>
