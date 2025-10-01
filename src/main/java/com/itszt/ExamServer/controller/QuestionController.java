@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itszt.ExamServer.entity.HttpResult;
 import com.itszt.ExamServer.entity.Question;
 import com.itszt.ExamServer.mapper.QuestionMapper;
+import com.itszt.ExamServer.service.QuestionService;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -38,7 +39,7 @@ public class QuestionController {
         System.out.println("insert = " + insert);
 
 
-        HttpResult httpResult = new HttpResult(200, "试题添加成功！");
+        HttpResult httpResult = new HttpResult(200, "试题添加成功！", null);
         ObjectMapper objectMapper = new ObjectMapper();
 
         String json = objectMapper.writeValueAsString(httpResult);
@@ -50,9 +51,7 @@ public class QuestionController {
     // 测试完毕！
     @SneakyThrows
     @DeleteMapping("/{questionId}")
-    public String delete(@RequestBody Question question, @PathVariable Integer questionId){
-        System.out.println("question = " + question);
-        questionService.validate(question);
+    public String delete(@PathVariable Integer questionId){
 
         // ---------------------------------------------------
         QueryWrapper<Question> wrapper = new QueryWrapper<>();
@@ -60,7 +59,7 @@ public class QuestionController {
 
         // ----------------------------------------------------
 
-        int delete = questionMapper.deleteById(wrapper);
+        int delete = questionMapper.delete(wrapper);
 
         return new ObjectMapper().writeValueAsString(new HttpResult(200, "删除成功！", delete));
     }
@@ -83,14 +82,17 @@ public class QuestionController {
     @PutMapping
     public String update(@RequestBody Question question){
 
-        QueryWrapper<Question> wrapper = new QueryWrapper<>();
-        wrapper.eq("title", question.getTitle()).ne("id", null);
+        System.out.println("question = " + question);
 
-        if(questionMapper.selectOne(wrapper)!=null){
+        QueryWrapper<Question> wrapper = new QueryWrapper<>();
+        wrapper.eq("title", question.getTitle());
+
+        Question questionGet = questionMapper.selectOne(wrapper);
+
+        if(questionGet!=null){
 
             questionMapper.updateById(question);
-
-            return new ObjectMapper().writeValueAsString(new HttpResult(200, "删除成功！", null));
+            return new ObjectMapper().writeValueAsString(new HttpResult(200, "更新成功！", question));
         }else{
 
             throw new IllegalAccessException("试题并不存在！");
