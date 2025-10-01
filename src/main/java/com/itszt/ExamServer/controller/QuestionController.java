@@ -2,19 +2,15 @@ package com.itszt.ExamServer.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.itszt.ExamServer.entity.Question;
 import com.itszt.ExamServer.entity.HttpResult;
+import com.itszt.ExamServer.entity.Question;
 import com.itszt.ExamServer.mapper.QuestionMapper;
-import com.itszt.ExamServer.service.QuestionService;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
-
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @RestController
