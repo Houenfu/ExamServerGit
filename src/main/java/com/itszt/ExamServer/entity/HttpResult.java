@@ -5,10 +5,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class HttpResult {
 
     private Integer status;
     private String msg;
+
+    public HttpResult(Integer status, String msg) {
+        this.status=status;
+        this.msg=msg;
+    }
 }

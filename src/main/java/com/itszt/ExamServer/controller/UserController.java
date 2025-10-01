@@ -1,5 +1,6 @@
 package com.itszt.ExamServer.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itszt.ExamServer.entity.HttpResult;
 import com.itszt.ExamServer.entity.User;
@@ -22,7 +23,7 @@ public class UserController {
     // task2：查询，出题，算分, exceptionHandler
     @SneakyThrows
     @GetMapping("login")
-    public String login(@RequestParam String username, @RequestParam String password){
+    public String login(@RequestParam String username, @RequestParam String password) throws JsonProcessingException {
 
         System.out.println("username = " + username + ", password = " + password);
 
