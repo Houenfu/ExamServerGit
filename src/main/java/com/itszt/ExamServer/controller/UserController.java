@@ -36,11 +36,11 @@ public class UserController {
         if(user!=null){
 
             // todo 返回正确结果！
-            return new ObjectMapper().writeValueAsString(new HttpResult(200, "登录成功！"));
+            return new ObjectMapper().writeValueAsString(new HttpResult(200, "登录成功！", null));
         }else{
 
             // 返回错误结果！
-            return new ObjectMapper().writeValueAsString(new HttpResult(400, "登录失败！"));
+            return new ObjectMapper().writeValueAsString(new HttpResult(400, "登录失败！", null));
         }
     }
 
