@@ -1,0 +1,9 @@
+package com.itszt.ExamServer.mapper;
+
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.itszt.ExamServer.Question.Question;
+import org.apache.ibatis.annotations.Mapper;
+
+@Mapper
+public interface QuestionMapper extends BaseMapper<Question> {
+}
