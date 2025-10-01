@@ -1,6 +1,6 @@
 package com.itszt.ExamServer.service;
 
-import com.itszt.ExamServer.Question.Question;
+import com.itszt.ExamServer.entity.Question;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;

@@ -2,7 +2,7 @@ package com.itszt.ExamServer.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.itszt.ExamServer.Question.Question;
+import com.itszt.ExamServer.entity.Question;
 import com.itszt.ExamServer.entity.HttpResult;
 import com.itszt.ExamServer.mapper.QuestionMapper;
 import com.itszt.ExamServer.service.QuestionService;
@@ -10,7 +10,6 @@ import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @RestController
@@ -26,17 +25,14 @@ public class QuestionController {
     // 测试完毕！
     @SneakyThrows
     @DeleteMapping("/{questionId}")
-    public String delete(@RequestBody Question question, @PathVariable Integer questionId){
-        System.out.println("question = " + question);
-        questionService.validate(question);
+    public String delete(@PathVariable Integer questionId){
 
         // ---------------------------------------------------
         QueryWrapper<Question> wrapper = new QueryWrapper<>();
         wrapper.eq("id", questionId);
 
         // ----------------------------------------------------
-
-        int delete = questionMapper.deleteById(wrapper);
+        int delete = questionMapper.delete(wrapper);
 
         return new ObjectMapper().writeValueAsString(new HttpResult(200, "删除成功！", delete));
     }
@@ -59,14 +55,16 @@ public class QuestionController {
     @PutMapping
     public String update(@RequestBody Question question){
 
+        System.out.println("question = " + question);
+
         QueryWrapper<Question> wrapper = new QueryWrapper<>();
-        wrapper.eq("title", question.getTitle()).ne("id", null);
+        wrapper.eq("title", question.getTitle());
 
         if(questionMapper.selectOne(wrapper)!=null){
 
             questionMapper.updateById(question);
 
-            return new ObjectMapper().writeValueAsString(new HttpResult(200, "删除成功！", null));
+            return new ObjectMapper().writeValueAsString(new HttpResult(200, "更新成功！", null));
         }else{
 
             throw new IllegalAccessException("试题并不存在！");

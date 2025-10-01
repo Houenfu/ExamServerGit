@@ -1,7 +1,7 @@
 package com.itszt.ExamServer.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.itszt.ExamServer.Question.Question;
+import com.itszt.ExamServer.entity.Question;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
