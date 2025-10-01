@@ -36,6 +36,9 @@ public class UserService {
         wrapper.eq("username", username);
         wrapper.eq("password", password);
 
-        return userMapper.selectOne(wrapper);
+        User user = userMapper.selectOne(wrapper);
+        System.out.println("user = " + user);
+        System.out.println("-------------------------------------------");
+        return user;
     }
 }
